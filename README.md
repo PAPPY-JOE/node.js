@@ -1,2 +1,3 @@
-# node.js
-Learning more about Node.js on frontendmasters
+# Front-end masters
+
+### Learning more about Node.Js, Javascript, Typescript, Next.Js on frontendmasters
