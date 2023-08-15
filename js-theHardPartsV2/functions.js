@@ -69,3 +69,15 @@ const output = MultiplyBy2(3) //6
 
 // to;
 const result4 = copyArrayAndManipulate(myArray, input => input * 2)
+
+// Returning functions
+
+function createFunction() {
+    function multiplyBy2(num) {
+        return num * 2
+    }
+    return multiplyBy2
+}
+
+const generatedFunc = createFunction()
+const result5 = generatedFunc(3)
