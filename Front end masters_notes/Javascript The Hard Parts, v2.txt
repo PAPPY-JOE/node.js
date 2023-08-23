@@ -1,0 +1,56 @@
+Javascript: The Hard Parts, v2
+https://static.frontendmasters.com/resources/2019-09-18-javascript-hard-parts-v2/javascript-hard-parts-v2.pdf
+
+1. Thread of execution - reads the code from top to bottom and does what it says.
+2. Saves stuff in the computers memory.
+
+// Call stack
+1. Javascript keeps track of what function is currently running
+2. Run a function - add to call stack
+3. Finish running the function - JS removes it from call stack
+4. Whatever is top of the call stack - thats the function we're currently running.
+
+// Callbacks & Higher Order Functions
+1. Functions are first class objects - they have everything an object has
+2. Higher order function - takes in or returns out a function, while a callback is that function taken in or returned out.
+
+// Arrow functions
+Since functions are objects, we can assign them to variables:
+from; function multiplyBy2(input){return input * 2}
+to; const multiplyBy2 = (input) => {return input*2}
+to; const multiplyBy2 = (input) => input*2
+to; const multiplyBy2 = input => input*2
+
+const output = multiplyBy2(3) //6
+
+// to;
+const result4 = copyArrayAndManipulate(myArray, input => input * 2)
+
+// Anonymous and arrow functions
+1. Improve immediate legibility of the code
+2. But at least for our purposes here they are 'syntactic sugar' - we'll see their full effects later
+3. Understanding how they're working under-the-hood is vital to avoid confusion
+
+// Pair programming
+The most effective way to grow as a software developer
+1. Researcher - Avoids blocks by reading everything they can find on their block bug
+2. Stackoverflower - Uses code snippets to fix bug without knowing how they work
+3. Pair programmer:
+a. Tackles block with a partner
+b. Stay focused on the problem
+c. Refine technical communication
+d. Collaborates to solve problem
+
+// Closure
+1. Closure is the most esoteric of JS concepts
+2. Enables powerful pro-levl functions like 'once' and 'memorize'
+3. Many JS design patterns including the module pattern use closure
+4. Build iterators, handle partial application and maintain state in an asynchronous world.
+
+// Returning Functions
+Functions can be returned from other functions in JS
+
+
+
+// Notes:
+# A method is a function stored as a variable in an object

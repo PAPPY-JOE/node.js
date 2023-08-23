@@ -1,0 +1,93 @@
+https://intro-to-nodejs-v2-site.vercel.app/lesson/11-testing
+
+node
+
+node *filename*
+
+global
+__dirname
+__filename
+process
+export module require
+
+module.exports
+
+
+// .mjs = module js
+// .js = common js
+
+12/08/2023
+process.exit(1) => error caused the exit
+process.exit(0) => successful exit of code sequence
+// Errors
+throw new Error("Test error")
+
+// Packages
+npm - node package manager
+npm init 
+or npm int --y (to skip all the steps)
+*give a unique name*
+semantic versioning - SEMVAR ... (1.0.0) - (majorVersion.minorVersion.patchVersion)
+*entry point is the file that gets accessed whenever anyone requests for my package*
+*For help:* npm install --help
+
+// To find npm packages to use:
+1. npm registry 
+2. search and click on relevant
+3. There's a readme. The number of dependencies are the number of packages that package has. The number of dependencies are the number of packages using that package. The number of versions shows how many versions it has and when they were released - tells how active or not this project is, and when it was last published. Try something more recent, 2 years ago is quite far, something in the past couple months is better. Head over to the github page, see the pull requests, open issues. Make sure it's being maintained and has a sort of active community
+
+Example: lodash
+1. npm info lodash
+2. npm instal lodash --save
+3. npm uninstall lodash
+
+node_modules keeps tracks of the dependencies of my dependencies and I should not touch or mess around with it!
+
+create a .gitignore and add node_modules so has not to save the bulk of those dependencies
+
+'--save' told package.json to keep track of my dependencies in the dependencies array, so other people can easily know what package they need to use my package. Also, all they'd need to do is: 'npm install' and all my dependencies get installed for them.
+
+package-lock.json guarantees that everyone on the team has the exact same version and just like it's name, it locks the agreed correct version, for example incase of conflicts.
+
+// Global installs
+for example: npm install yarn -g
+the above makes yarn available throughout my machine so I can use it in my terminal, not just one project. But what if I need a global install but in one project? That's where 'npx' comes in. It tell's node to do a one off installation for a global dependency
+
+'npx yarn add lodash'
+The above makes npx to tell yarn to do something for me one time, without having to install yarn. Still works if I have yarn on my machine
+
+to uninstall:
+npm uninstall yarn -g
+
+I can add 'dependency: "npm --" to my scripts, just to be sure there's no mistake with conflict of having both yarn and npm in my package. Both are great, just stick to the one you're using and the one only, not both!
+
+// Scripts
+I can literally do so much with scripts! My best one so far is pointing the script to a file and then the commands in that file get executed:
+for example: "rm": "./file.js"
+
+
+// Creating CLIs
+CLIs are command Line Interfaces for 'long' and is basically an app in a box.
+
+1. add this to the top of the file so as to let the computer know that it must run with node. It's called hashbang or shabang: #! /usr/bin/env node
+
+2. add a "bin": {} object to the package.json, in this case - for CLIs, the "main" isn't really useful since the CLI isn't going to be imported per say only used in the command prompt.
+
+3. inside "bin" add the command you want to run and the file it points to: "reddit": "./reddit.mjs"
+
+4. run 'npm install -g' inside the folder I'm in, this tells npm to install my CLI globally
+
+// creating a reddit cli that ...
+npm install open node-fetch yargs --save
+
+// CLI frameworks - commander cli, caporal cli, oclif cli
+
+
+// The promise land: Servers/APIs
+* Leverage on community and not start building these from scratch
+* When json is uploaded, we receive it as buffer. So we need to add it to the variable we called "body"
+
+
+// creating a server api with express
+
+npm i express body-parser morgan --save
