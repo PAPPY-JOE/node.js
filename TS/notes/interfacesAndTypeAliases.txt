@@ -1,0 +1,397 @@
+Learn TypeScript w/ Mike North
+TypeScript Fundamentals v3GitHubEdit on GitHub
+Interfaces and Type Aliases
+June 08, 2021
+
+← Union and Intersection Types
+JSON types →
+Table of Contents
+Type aliases
+
+Inheritance in type aliases
+Interfaces
+
+Inheritance in interfaces
+
+extends
+implements
+Open Interfaces
+Choosing which to use
+Recursion
+TypeScript provides two mechanisms for centrally defining types and giving them useful and meaningful names: interfaces and type aliases. We will study both concepts in depth, and explain when it makes sense to use each type.
+
+Type aliases
+Think back to the : {name: string, email: string} syntax we’ve used up until this point for type annotations. This syntax will get increasingly complicated as more properties are added to this type. Furthermore, if we pass objects of this type around through various functions and variables, we will end up with a lot of types that need to be manually updated whenever we need to make any changes!
+
+Type aliases help to address this, by allowing us to:
+
+define a more meaningful name for this type
+declare the particulars of the type in a single place
+import and export this type from modules, the same as if it were an exported value
+///////////////////////////////////////////////////////////
+// @filename: types.ts
+export type UserContactInfo = {
+  name: string
+  email: string
+}
+///////////////////////////////////////////////////////////
+// @filename: utilities.ts
+import { UserContactInfo } from "./types"
+               
+(alias) type UserContactInfo = {
+    name: string;
+    email: string;
+}
+import UserContactInfo
+function printContactInfo(info: UserContactInfo) {
+  console.log(info)
+               
+(parameter) info: UserContactInfo
+  console.log(info.email)
+                    
+(property) email: string
+}
+Try
+We can see a couple of things here:
+
+the tooltip on info is now a lot cleaner and more semantic (meaningful, in connection with the concept behind it)
+import/export of this type works just as it would for a function or a class in JavaScript
+It’s important to realize that the name UserContactInfo is just for our convenience. This is still a structural type system
+
+///////////////////////////////////////////////////////////
+// @filename: utilities.ts
+import { UserContactInfo } from "./types"
+function printContactInfo(info: UserContactInfo) {
+  console.log(info)
+  console.log(info.email)
+}
+const painter = {
+  name: "Robert Ross",
+  email: "bross@pbs.org",
+  favoriteColor: "Titanium White",
+}
+ 
+printContactInfo(painter) // totally fine
+                   
+const painter: {
+    name: string;
+    email: string;
+    favoriteColor: string;
+}
+Try
+Let’s look at the declaration syntax for a moment:
+
+type UserContactInfo = {
+  name: string
+  email: string
+}
+Try
+A few things to point out here:
+
+This is a rare occasion where we see type information on the right hand side of the assignment operator (=)
+We’re using TitleCase to format the alias’ name. This is a common convention
+As we can see below, we can only declare an alias of a given name once within a given scope. This is kind of like how a let or const variable declaration works
+type UserContactInfo = {
+Duplicate identifier 'UserContactInfo'.
+  name: string
+  email: string
+}
+ 
+type UserContactInfo = {
+Duplicate identifier 'UserContactInfo'.
+  fail: "this will not work"
+}
+Try
+A type alias can hold any type, as it’s literally an alias (name) for a type of some sort.
+
+Here’s an example of how we can “cleaned up” an the code from our Union and Intersection Types section (previous chapter) through the use of type aliases:
+
+///////////////////////////////////////////////////////////
+// @filename: original.ts
+/**
+ * ORIGINAL version
+ */
+export function maybeGetUserInfo():
+  | ["error", Error]
+  | ["success", { name: string; email: string }] {
+  // implementation is the same in both examples
+  if (Math.random() > 0.5) {
+    return [
+      "success",
+      { name: "Mike North", email: "mike@example.com" },
+    ]
+  } else {
+    return [
+      "error",
+      new Error("The coin landed on TAILS :("),
+    ]
+  }
+}
+ 
+///////////////////////////////////////////////////////////
+// @filename: with-aliases.ts
+type UserInfoOutcomeError = ["error", Error]
+type UserInfoOutcomeSuccess = [
+  "success",
+  { name: string; email: string }
+]
+type UserInfoOutcome =
+  | UserInfoOutcomeError
+  | UserInfoOutcomeSuccess
+ 
+/**
+ * CLEANED UP version
+ */
+export function maybeGetUserInfo(): UserInfoOutcome {
+  // implementation is the same in both examples
+  if (Math.random() > 0.5) {
+    return [
+      "success",
+      { name: "Mike North", email: "mike@example.com" },
+    ]
+  } else {
+    return [
+      "error",
+      new Error("The coin landed on TAILS :("),
+    ]
+  }
+}
+Try
+Inheritance in type aliases
+You can create type aliases that combine existing types with new behavior by using Intersection (&) types.
+
+type SpecialDate = Date & { getReason(): string }
+ 
+const newYearsEve: SpecialDate = {
+  ...new Date(),
+  getReason: () => "Last day of the year",
+}
+newYearsEve.getReason
+               
+getDate
+getDay
+getFullYear
+getHours
+getMilliseconds
+getMinutes
+getMonth
+getReason
+getSeconds
+getTime
+getTimezoneOffset
+getUTCDate
+getUTCDay
+getUTCFullYear
+getUTCHours
+getUTCMilliseconds
+getUTCMinutes
+getUTCMonth
+getUTCSeconds
+getVarDate
+Try
+While there’s no true extends keyword that can be used when defining type aliases, this pattern has a very similar effect
+
+Interfaces
+An interface is a way of defining an object type. An “object type” can be thought of as, “an instance of a class could conceivably look like this”.
+
+For example, string | number is not an object type, because it makes use of the union type operator.
+
+interface UserInfo {
+  name: string
+  email: string
+}
+function printUserInfo(info: UserInfo) {
+  info.name
+        
+(property) UserInfo.name: string
+}
+Try
+Like type aliases, interfaces can be imported/exported between modules just like values, and they serve to provide a “name” for a specific type.
+
+Inheritance in interfaces
+EXTENDS
+If you’ve ever seen a JavaScript class that “inherits” behavior from a base class, you’ve seen an example of what TypeScript calls a heritage clause: extends
+
+class Animal {
+  eat(food) {
+    consumeFood(food)
+  }
+}
+class Dog extends Animal {
+  bark() {
+    return "woof"
+  }
+}
+ 
+const d = new Dog()
+d.eat
+  
+(method) Animal.eat(food: any): void
+d.bark
+   
+(method) Dog.bark(): string
+Try
+Just as in in JavaScript, a subclass extends from a base class.
+Additionally a “sub-interface” extends from a base interface, as shown in the example below
+interface Animal {
+  isAlive(): boolean
+}
+interface Mammal extends Animal {
+  getFurOrHairColor(): string
+}
+interface Dog extends Mammal {
+  getBreed(): string
+}
+function careForDog(dog: Dog) {
+  dog.getBreed
+       
+getBreed
+getFurOrHairColor
+}
+Try
+IMPLEMENTS
+TypeScript adds a second heritage clause that can be used to state that a given class should produce instances that confirm to a given interface: implements.
+
+interface AnimalLike {
+  eat(food): void
+}
+ 
+class Dog implements AnimalLike {
+Class 'Dog' incorrectly implements interface 'AnimalLike'.
+  Property 'eat' is missing in type 'Dog' but required in type 'AnimalLike'.
+  bark() {
+    return "woof"
+  }
+}
+Try
+In the example above, we can see that TypeScript is objecting to us failing to add an eat() method to our Dog class. Without this method, instances of Dog do not conform to the AnimalLike interface. Let’s update our code:
+
+interface AnimalLike {
+  eat(food): void
+}
+ 
+class Dog implements AnimalLike {
+  bark() {
+    return "woof"
+  }
+  eat(food) {
+    consumeFood(food)
+  }
+}
+Try
+There, that’s better. While TypeScript (and JavaScript) does not support true multiple inheritance (extending from more than one base class), this implements keyword gives us the ability to validate, at compile time, that instances of a class conform to one or more “contracts” (types). Note that both extends and implements can be used together:
+
+class LivingOrganism {
+  isAlive() {
+    return true
+  }
+}
+interface AnimalLike {
+  eat(food): void
+}
+interface CanBark {
+  bark(): string
+}
+ 
+class Dog
+  extends LivingOrganism
+  implements AnimalLike, CanBark
+{
+  bark() {
+    return "woof"
+  }
+  eat(food) {
+    consumeFood(food)
+  }
+}
+Try
+While it’s possible to use implements with a type alias, if the type ever breaks the “object type” rules there’s some potential for problems…
+
+type CanBark =
+  | number
+  | {
+      bark(): string
+    }
+ 
+class Dog implements CanBark {
+A class can only implement an object type or intersection of object types with statically known members.
+  bark() {
+    return "woof"
+  }
+  eat(food) {
+    consumeFood(food)
+  }
+}
+Try
+For this reason, it is best to use interfaces for types that are used with the implements heritage clause.
+
+Open Interfaces
+TypeScript interfaces are “open”, meaning that unlike in type aliases, you can have multiple declarations in the same scope:
+
+interface AnimalLike {
+  isAlive(): boolean
+}
+function feed(animal: AnimalLike) {
+  animal.eat
+         
+(method) AnimalLike.eat(food: any): void
+  animal.isAlive
+           
+(method) AnimalLike.isAlive(): boolean
+}
+ 
+// SECOND DECLARATION OF THE SAME NAME
+interface AnimalLike {
+  eat(food): void
+}
+Try
+These declarations are merged together to create a result identical to what you would see if both the isAlive and eat methods were on a single interface declaration.
+
+You may be asking yourself: where and how is this useful?
+
+Imagine a situation where you want to add a global property to the window object
+
+window.document // an existing property
+          
+(property) document: Document
+window.exampleProperty = 42
+             
+(property) Window.exampleProperty: number
+// tells TS that `exampleProperty` exists
+interface Window {
+  exampleProperty: number
+}
+Try
+What we have done here is augment an existing Window interface that TypeScript has set up for us behind the scene.
+
+Choosing which to use
+In many situations, either a type alias or an interface would be perfectly fine, however…
+
+If you need to define something other than an object type (e.g., use of the | union type operator), you must use a type alias
+If you need to define a type to use with the implements heritage term, it’s best to use an interface
+If you need to allow consumers of your types to augment them, you must use an interface.
+Recursion
+Recursive types, are self-referential, and are often used to describe infinitely nestable types. For example, consider infinitely nestable arrays of numbers
+
+;[3, 4, [5, 6, [7], 59], 221]
+You may read or see things that indicate you must use a combination of interface and type for recursive types. As of TypeScript 3.7 this is now much easier, and works with either type aliases or interfaces.
+
+type NestedNumbers = number | NestedNumbers[]
+ 
+const val: NestedNumbers = [3, 4, [5, 6, [7], 59], 221]
+ 
+if (typeof val !== "number") {
+  val.push(41)
+       
+(method) Array<NestedNumbers>.push(...items: NestedNumbers[]): number
+  val.push("this will not work")
+Argument of type 'string' is not assignable to parameter of type 'NestedNumbers'.
+}
+Try
+← Union and Intersection Types
+JSON types →
+Mike North
+Written by Mike North , Developer Experience Tech Lead at Stripe, and Frontend Masters Instructor. You should connect with him on LinkedIn or follow him on Twitter
+
+© 2023 All Rights Reserved
+Navigated to Interfaces and Type Aliases
