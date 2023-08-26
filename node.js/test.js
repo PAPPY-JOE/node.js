@@ -64,36 +64,67 @@
 // const sub2 = [[16, 18, 49]];
 // console.log(canFormMainArray(main2, sub2)); // Output: false
 
-function canFormMainArray(main, sub) {
-    function backtrack(index) {
-        if (index === main.length) {
-            return true; // Successfully formed the main array
+// function canFormMainArray(main, sub) {
+//     function backtrack(index) {
+//         if (index === main.length) {
+//             return true; // Successfully formed the main array
+//         }
+
+//         for (let i = 0; i < sub.length; i++) {
+//             const currentSubArray = sub[i];
+
+//             if (currentSubArray.length > 0 && currentSubArray[0] === main[index]) {
+//                 const nextSubArray = [...currentSubArray];
+//                 nextSubArray.shift(); // Remove the matched element from the sub-array
+//                 if (backtrack(index + 1)) {
+//                     return true;
+//                 }
+//             }
+//         }
+
+//         return false;
+//     }
+
+//     return backtrack(0);
+// }
+
+// // Example 1
+// const main1 = [15, 88];
+// const sub1 = [[88], [15]];
+// console.log(canFormMainArray(main1, sub1)); // Output: true
+
+// // Example 2
+// const main2 = [49, 18, 16];
+// const sub2 = [[16, 18, 49]];
+// console.log(canFormMainArray(main2, sub2)); // Output: false
+
+/**
+ * @param {number} n
+ * @return {Function} counter
+ */
+var createCounter = function (n) { 
+    let arr = new Array() // same as let arr = []
+    return function () { 
+        if (arr.length === 0){
+            arr.push(n)
+        return n
+        }else{
+            arr.push(Number(arr.slice(-1)) + 1)
+        return Number(arr.slice(-1))
         }
+    };
+};
 
-        for (let i = 0; i < sub.length; i++) {
-            const currentSubArray = sub[i];
 
-            if (currentSubArray.length > 0 && currentSubArray[0] === main[index]) {
-                const nextSubArray = [...currentSubArray];
-                nextSubArray.shift(); // Remove the matched element from the sub-array
-                if (backtrack(index + 1)) {
-                    return true;
-                }
-            }
-        }
+/** 
+ * const counter = createCounter(10)
+ * counter() // 10
+ * counter() // 11
+ * counter() // 12
+ */
 
-        return false;
-    }
 
-    return backtrack(0);
-}
-
-// Example 1
-const main1 = [15, 88];
-const sub1 = [[88], [15]];
-console.log(canFormMainArray(main1, sub1)); // Output: true
-
-// Example 2
-const main2 = [49, 18, 16];
-const sub2 = [[16, 18, 49]];
-console.log(canFormMainArray(main2, sub2)); // Output: false
+const counter = createCounter(-2)
+counter() // 10
+counter() // 11
+counter() // 12 
