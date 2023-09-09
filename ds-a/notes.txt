@@ -1,0 +1,39 @@
+Sequential data structures: Queues, Stacks, Linked lists
+
+In Queues the oldest item is removed first (Array)
+In Stacks the newest item is removed first ()
+
+Stacks
+    const stack = [1,2,3,4];
+
+    stack.push(5); 
+    // [1,2,3,4,5]
+
+    stack.pop();
+    // -> 5
+    // [1,2,3,4]
+
+Queues
+    const queue = [1,2,3,4];
+
+    queue.enqueue(5); 
+    // [1,2,3,4,5]
+
+    queue.dequeue();
+    // -> 1
+    // [2,3,4,5]
+
+Linked List IRL
+    const linkedlist = {
+        head: {
+            value: 1
+            next: {
+                value: 2
+                next: {
+                    value: 3
+                    next: null
+                }
+            }
+        }
+    }
+
