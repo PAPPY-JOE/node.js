@@ -37,3 +37,35 @@ Linked List IRL
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+Exercirse: without looking anything up, draw the following data structures: Stack, Queue, Linked List.
+Solution: Don't judge me hahaha :)
+
+Stack:
+    const stack = [1, 2, 3, 4, 5]
+    stack.unstack() // => 5
+
+Queue:
+    const queue = [1, 2, 3, 4, 5]
+    queue.dequeue() // => 1
+
+Linked List:
+    const linkedlist = {
+        value: 1,
+        next: {
+            value: 2,
+            next: {
+                value: 3,
+                next: null
+            }
+        }
+    }
